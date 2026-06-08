@@ -1,0 +1,6 @@
+id,title,author,score,num_comments,permalink,created_at,flair
+abc123,Python 3.13 released with major performance improvements,python_dev,4521,312,https://www.reddit.com/r/python/comments/abc123/,2026-06-01T08:30:00Z,News
+def456,I built a full async web scraper using httpx and asyncio,async_coder,3200,145,https://www.reddit.com/r/python/comments/def456/,2026-06-02T14:10:00Z,Project
+ghi789,Why I switched from Flask to FastAPI and never looked back,fastapi_fan,2800,220,https://www.reddit.com/r/python/comments/ghi789/,2026-06-03T09:45:00Z,Discussion
+jkl012,TIL about walrus operator and it changed how I write loops,til_python,2100,98,https://www.reddit.com/r/python/comments/jkl012/,2026-06-03T18:20:00Z,TIL
+mno345,Polars vs Pandas benchmark: 10x faster on large datasets,data_eng42,1950,175,https://www.reddit.com/r/python/comments/mno345/,2026-06-04T11:00:00Z,Data Science

@@ -1,0 +1,58 @@
+{
+  "subreddit": "python",
+  "timeframe": "week",
+  "fetched_at": "2026-06-08T10:00:00Z",
+  "count": 5,
+  "posts": [
+    {
+      "id": "abc123",
+      "title": "Python 3.13 released with major performance improvements",
+      "author": "python_dev",
+      "score": 4521,
+      "num_comments": 312,
+      "permalink": "https://www.reddit.com/r/python/comments/abc123/",
+      "created_at": "2026-06-01T08:30:00Z",
+      "flair": "News"
+    },
+    {
+      "id": "def456",
+      "title": "I built a full async web scraper using httpx and asyncio",
+      "author": "async_coder",
+      "score": 3200,
+      "num_comments": 145,
+      "permalink": "https://www.reddit.com/r/python/comments/def456/",
+      "created_at": "2026-06-02T14:10:00Z",
+      "flair": "Project"
+    },
+    {
+      "id": "ghi789",
+      "title": "Why I switched from Flask to FastAPI and never looked back",
+      "author": "fastapi_fan",
+      "score": 2800,
+      "num_comments": 220,
+      "permalink": "https://www.reddit.com/r/python/comments/ghi789/",
+      "created_at": "2026-06-03T09:45:00Z",
+      "flair": "Discussion"
+    },
+    {
+      "id": "jkl012",
+      "title": "TIL about walrus operator and it changed how I write loops",
+      "author": "til_python",
+      "score": 2100,
+      "num_comments": 98,
+      "permalink": "https://www.reddit.com/r/python/comments/jkl012/",
+      "created_at": "2026-06-03T18:20:00Z",
+      "flair": "TIL"
+    },
+    {
+      "id": "mno345",
+      "title": "Polars vs Pandas benchmark: 10x faster on large datasets",
+      "author": "data_eng42",
+      "score": 1950,
+      "num_comments": 175,
+      "permalink": "https://www.reddit.com/r/python/comments/mno345/",
+      "created_at": "2026-06-04T11:00:00Z",
+      "flair": "Data Science"
+    }
+  ]
+}

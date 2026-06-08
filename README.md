@@ -1,132 +1,65 @@
-# OnlyStack — Intern Trial Task
+# Reddit Top Posts Scraper
 
-**Deadline: 24 hours from the time this task is sent to you.**
+A command-line tool that fetches top posts from any public subreddit using Reddit's public JSON API and outputs clean, structured data to JSON and CSV.
 
-Welcome. This is a short, self-contained build task. It's designed to take a focused person roughly one working day. We're not looking for a finished product — we're looking at how you think, how you write code, and how you handle the parts that aren't on the happy path.
+## Setup
 
-You do **not** need anything from us to do this: no API keys, no accounts, no access to our codebase. Everything here runs against public data.
+**Requirements:** Python 3.10+
 
----
-
-## The task
-
-Build a **local scraper script** that pulls the top posts from a subreddit and outputs clean, structured data.
-
-Reddit exposes public data as JSON — append `.json` to almost any page URL and you get a structured response instead of HTML. For example:
-
-```
-https://www.reddit.com/r/programming/top.json?t=week&limit=50
+```bash
+pip install -r requirements.txt
 ```
 
-You do **not** need to scrape HTML, and you do **not** need to log in. Work entirely with the public JSON endpoints.
+## Usage
 
-The script should take a **subreddit name** and a **timeframe** as inputs and produce a clean file of the top posts.
-
----
-
-## Requirements
-
-### Inputs
-- Subreddit name (e.g. `programming`)
-- Timeframe (`day`, `week`, `month`, `year`, `all`)
-- (Optional) a limit on number of posts, defaulting to 50
-
-### For each post, extract
-- Title
-- Author
-- Score (upvotes)
-- Number of comments
-- Permalink (full URL)
-- Created timestamp (as a readable ISO datetime, not a raw Unix number)
-- Flair, if present
-
-### Behaviour
-- **Pagination** — Reddit returns posts in pages using an `after` cursor. Follow it so you can pull more than the first page when the limit requires it.
-- **Rate limiting** — Reddit will rate-limit you. Set a real, descriptive `User-Agent` header, don't hammer the endpoint, and back off + retry on a `429` response. We pay specific attention to this.
-- **Clean output** — write the results to **both** a `JSON` file and a `CSV` file.
-- **Resilience** — dedupe posts, and skip malformed entries rather than crashing the whole run.
-
-### Handle these failure cases gracefully (don't just crash)
-- Subreddit does not exist (`404`)
-- Subreddit is private or quarantined
-- Empty results (valid subreddit, no posts in the timeframe)
-- Network timeout / upstream error
-
----
-
-## Suggested output schema
-
-Your JSON output should be something stable and predictable, e.g.:
-
-```json
-{
-  "subreddit": "programming",
-  "timeframe": "week",
-  "fetched_at": "2026-06-04T12:00:00Z",
-  "count": 50,
-  "posts": [
-    {
-      "id": "abc123",
-      "title": "Example post title",
-      "author": "some_user",
-      "score": 1543,
-      "num_comments": 210,
-      "permalink": "https://www.reddit.com/r/programming/comments/abc123/...",
-      "created_at": "2026-06-01T08:30:00Z",
-      "flair": "Discussion"
-    }
-  ]
-}
+```bash
+python scraper.py <subreddit> <timeframe> [--limit N]
 ```
 
-The CSV should contain the same per-post fields, one row per post.
+**Examples:**
+```bash
+python scraper.py programming week --limit 50
+python scraper.py worldnews day --limit 25
+python scraper.py python all --limit 100
+```
 
----
+Output files are saved to the `output/` directory:
+- `output/programming_week.json`
+- `output/programming_week.csv`
 
-## Tech choices
+## Running Tests
 
-Pick your own language and libraries — choosing a sensible stack and pinning your dependencies (`requirements.txt`, `package.json`, etc.) is part of the task. Use whatever you're fastest and cleanest in.
+```bash
+pip install pytest
+pytest tests/ -v
+```
 
----
+## Assumptions & Decisions
 
-## Rules
+- **Python + requests only** — no heavy frameworks needed for this task.
+- **No authentication** — uses Reddit's public `.json` endpoints exclusively.
+- **User-Agent** is set to a descriptive string as required by Reddit's API guidelines.
+- **Pagination** follows Reddit's `after` cursor across pages, with a 1-second delay between requests.
+- **Rate limiting** — backs off on 429 with `Retry-After`, retries up to 3 times.
+- **Resilience** — malformed posts are skipped and logged; the run continues.
+- Timestamps are converted from Unix UTC to ISO 8601 format.
+- Deleted authors are stored as `[deleted]` rather than `null`.
 
-- Use **public data only**. Do not log in, do not use credentials, and do not try to bypass any access control, anti-bot measure, or CAPTCHA. If something requires that, it's out of scope — note it and move on.
-- Respect the endpoint: sane request rate, real `User-Agent`, back off when asked to.
+## Error Handling
 
----
+| Scenario | Behaviour |
+|---|---|
+| Subreddit not found (404) | Logs error, exits cleanly |
+| Private/quarantined (403) | Logs error, exits cleanly |
+| Empty results | Logs warning, saves empty output |
+| Network timeout | Retries up to 3x, then exits cleanly |
+| Rate limited (429) | Waits Retry-After seconds, retries |
+| Malformed post | Skips the post, continues |
 
-## Deliverables
+## What I'd Improve With More Time
 
-1. The code, in a Git repo (push to a public/private GitHub repo and share the link) or as a zip.
-2. A short **README** with:
-   - How to install and run it (exact commands)
-   - Any assumptions or decisions you made
-   - Anything you'd improve or add with more time
-3. The generated `JSON` and `CSV` output from at least one real run.
-4. At least one or two small tests (e.g. covering the parsing logic and the "subreddit not found" path).
-
----
-
-## How we evaluate
-
-We're looking at:
-- **Does it work** end to end on a real subreddit.
-- **Failure handling** — how the script behaves when things go wrong, not just when they go right.
-- **Code quality** — readable, minimal, no over-engineering. A clean small solution beats a clever complicated one.
-- **Output quality** — is the data clean, consistent, and actually usable.
-- **Communication** — a clear README, sensible commit messages, and honest notes about what's unfinished.
-
-A note on questions: if something is genuinely ambiguous, ask us — one or two sharp questions up front is a good sign. Don't get stuck silently.
-
----
-
-## Deadline
-
-**You have 24 hours from the moment this task is sent to you.** Commit as you go so your progress is timestamped.
-
-We'd rather see how far you get *cleanly* than a rushed attempt at everything. If you run out of time, submit what you have and use the README to explain what's done, what isn't, and what you'd do next.
-
-Clone this repo and start the project from here and create a pull request to merge into here from your branch as a fork.
-
-Good luck.
+- Add async requests (httpx + asyncio) for faster pagination
+- Support multiple subreddits in one run
+- Add a --output-dir flag for custom output paths
+- Store results in SQLite for incremental runs
+- Expand test coverage to include pagination logic
