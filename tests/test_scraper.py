@@ -5,27 +5,24 @@ from unittest.mock import patch
 from scraper import parse_post, scrape
 
 
-def make_child(overrides=None):
+def make_post(overrides=None):
     base = {
-        "kind": "t3",
-        "data": {
-            "id": "abc123",
-            "title": "Test Post",
-            "author": "test_user",
-            "score": 100,
-            "num_comments": 10,
-            "permalink": "/r/test/comments/abc123/test_post/",
-            "created_utc": 1717200000.0,
-            "link_flair_text": "Discussion",
-        }
+        "id": "abc123",
+        "title": "Test Post",
+        "author": "test_user",
+        "score": 100,
+        "num_comments": 10,
+        "permalink": "/r/test/comments/abc123/test_post/",
+        "created_utc": 1717200000.0,
+        "link_flair_text": "Discussion",
     }
     if overrides:
-        base["data"].update(overrides)
+        base.update(overrides)
     return base
 
 
 def test_parse_post_normal():
-    post = parse_post(make_child())
+    post = parse_post(make_post())
     assert post["id"] == "abc123"
     assert post["title"] == "Test Post"
     assert post["score"] == 100
@@ -34,17 +31,17 @@ def test_parse_post_normal():
 
 
 def test_parse_post_no_flair():
-    post = parse_post(make_child({"link_flair_text": None}))
+    post = parse_post(make_post({"link_flair_text": None}))
     assert post["flair"] == ""
 
 
 def test_parse_post_deleted_author():
-    post = parse_post(make_child({"author": None}))
+    post = parse_post(make_post({"author": None}))
     assert post["author"] == "[deleted]"
 
 
 def test_parse_post_malformed():
-    result = parse_post({"data": {"title": "No ID here"}})
+    result = parse_post({"title": "No ID here"})
     assert result is None
 
 
@@ -66,15 +63,15 @@ def test_scrape_private_subreddit():
 
 
 def test_scrape_empty_results():
-    mock_response = {"data": {"children": [], "after": None}}
+    mock_response = {"data": []}
     with patch("scraper.fetch_page", return_value=mock_response):
         posts = scrape("emptysubreddit", "week")
     assert posts == []
 
 
 def test_scrape_deduplication():
-    child = make_child()
-    mock_response = {"data": {"children": [child, child, child], "after": None}}
+    post = make_post()
+    mock_response = {"data": [post, post, post]}
     with patch("scraper.fetch_page", return_value=mock_response):
         posts = scrape("test", "week", limit=10)
     assert len(posts) == 1

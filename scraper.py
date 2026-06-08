@@ -1,6 +1,7 @@
 """
 Reddit Top Posts Scraper
-Fetches top posts from a subreddit using Reddit's public JSON API.
+Fetches top posts from a subreddit using Arctic Shift API (mirrors Reddit public data).
+Falls back gracefully on all error conditions.
 """
 
 import argparse
@@ -16,21 +17,38 @@ import requests
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 log = logging.getLogger(__name__)
 
-BASE_URL = "https://www.reddit.com"
-HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-}
+BASE_URL = "https://arctic-shift.photon-reddit.com/api/posts/search"
+REDDIT_BASE = "https://www.reddit.com"
+HEADERS = {"User-Agent": "intern-scraper/1.0 by Zain-PMZ"}
 
 
 def fetch_page(subreddit: str, timeframe: str, limit: int, after: str | None) -> dict:
-    url = f"{BASE_URL}/r/{subreddit}/top.json"
-    params = {"t": timeframe, "limit": min(limit, 100), "raw_json": 1}
+    """Fetch one page of posts. Raises on unrecoverable errors."""
+    # Calculate time range based on timeframe
+    now = int(time.time())
+    timeframe_seconds = {
+        "day": 86400,
+        "week": 604800,
+        "month": 2592000,
+        "year": 31536000,
+        "all": None
+    }
+
+    params = {
+        "subreddit": subreddit,
+        "limit": min(limit, 100),
+        "sort": "desc",
+    }
+
+    if timeframe != "all":
+        params["after"] = str(now - timeframe_seconds[timeframe])
+
     if after:
-        params["after"] = after
+        params["before_id"] = after
 
     for attempt in range(3):
         try:
-            resp = requests.get(url, headers=HEADERS, params=params, timeout=10)
+            resp = requests.get(BASE_URL, headers=HEADERS, params=params, timeout=10)
         except requests.exceptions.Timeout:
             log.warning("Request timed out (attempt %d/3)", attempt + 1)
             time.sleep(2 ** attempt)
@@ -39,7 +57,12 @@ def fetch_page(subreddit: str, timeframe: str, limit: int, after: str | None) ->
             raise RuntimeError(f"Network error: {e}") from e
 
         if resp.status_code == 200:
-            return resp.json()
+            data = resp.json()
+            if data.get("data") is None:
+                raise ValueError(f"Subreddit r/{subreddit} not found or is private.")
+            if isinstance(data["data"], list) and len(data["data"]) == 0:
+                return {"data": {"children": [], "after": None}}
+            return data
         if resp.status_code == 429:
             wait = int(resp.headers.get("Retry-After", 5))
             log.warning("Rate limited. Waiting %ds...", wait)
@@ -55,16 +78,20 @@ def fetch_page(subreddit: str, timeframe: str, limit: int, after: str | None) ->
 
 
 def parse_post(post_data: dict) -> dict | None:
+    """Extract fields from a single post. Returns None if malformed."""
     try:
-        d = post_data["data"]
+        d = post_data
+        created_utc = d.get("created_utc") or d.get("created")
+        if isinstance(created_utc, str):
+            created_utc = float(created_utc)
         return {
             "id": d["id"],
             "title": d["title"],
             "author": d.get("author") or "[deleted]",
-            "score": int(d["score"]),
-            "num_comments": int(d["num_comments"]),
-            "permalink": BASE_URL + d["permalink"],
-            "created_at": datetime.fromtimestamp(d["created_utc"], tz=timezone.utc)
+            "score": int(d.get("score", 0)),
+            "num_comments": int(d.get("num_comments", 0)),
+            "permalink": REDDIT_BASE + d["permalink"],
+            "created_at": datetime.fromtimestamp(created_utc, tz=timezone.utc)
                                  .strftime("%Y-%m-%dT%H:%M:%SZ"),
             "flair": d.get("link_flair_text") or "",
         }
@@ -74,6 +101,7 @@ def parse_post(post_data: dict) -> dict | None:
 
 
 def scrape(subreddit: str, timeframe: str, limit: int = 50) -> list[dict]:
+    """Paginate through results and return up to limit unique posts."""
     posts = []
     seen_ids = set()
     after = None
@@ -83,20 +111,34 @@ def scrape(subreddit: str, timeframe: str, limit: int = 50) -> list[dict]:
         log.info("Fetching %d posts (have %d so far)...", batch_limit, len(posts))
 
         data = fetch_page(subreddit, timeframe, batch_limit, after)
-        children = data.get("data", {}).get("children", [])
+
+        # Handle both Arctic Shift format and standard format
+        if "data" in data and isinstance(data["data"], list):
+            children = data["data"]
+        else:
+            children = data.get("data", {}).get("children", [])
 
         if not children:
             log.info("No more posts available.")
             break
 
         for child in children:
-            post = parse_post(child)
+            # Arctic Shift returns posts directly, not wrapped in {kind, data}
+            post_data = child.get("data", child)
+            post = parse_post(post_data)
             if post and post["id"] not in seen_ids:
                 seen_ids.add(post["id"])
                 posts.append(post)
 
-        after = data.get("data", {}).get("after")
-        if not after:
+        # Use last post ID for pagination
+        if children and len(posts) < limit:
+            new_after = children[-1].get("name") or children[-1].get("id")
+            if new_after and not new_after.startswith("t3_"):
+                new_after = "t3_" + new_after
+            if new_after == after:
+                break
+            after = new_after
+        else:
             break
 
         time.sleep(1)
@@ -123,7 +165,7 @@ def save_csv(posts: list[dict], path: Path) -> None:
 
 def main():
     parser = argparse.ArgumentParser(description="Scrape top posts from a subreddit.")
-    parser.add_argument("subreddit", help="Subreddit name (e.g. programming)")
+    parser.add_argument("subreddit", help="Subreddit name (e.g. python)")
     parser.add_argument("timeframe", choices=["day", "week", "month", "year", "all"],
                         help="Time filter")
     parser.add_argument("--limit", type=int, default=50, help="Max posts to fetch (default: 50)")
