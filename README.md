@@ -10,15 +10,11 @@ You do **not** need anything from us to do this: no API keys, no accounts, no ac
 
 ## The task
 
-Build a **local scraper script** that pulls the top posts from a subreddit and outputs clean, structured data.
-
-Reddit exposes public data as JSON — append `.json` to almost any page URL and you get a structured response instead of HTML. For example:
+Build a **local scraper script** that pulls the top posts from a subreddit and outputs clean, structured data. You will need to integrate logged-in cookie, rate-limiting observing the network requests and more into getting this to run. DO NOT USE ANY 3rd PARTY API SERVICE.
 
 ```
 https://www.reddit.com/r/programming/top.json?t=week&limit=50
 ```
-
-You do **not** need to scrape HTML, and you do **not** need to log in. Work entirely with the public JSON endpoints.
 
 The script should take a **subreddit name** and a **timeframe** as inputs and produce a clean file of the top posts.
 
@@ -26,7 +22,7 @@ The script should take a **subreddit name** and a **timeframe** as inputs and pr
 
 ## Requirements
 
-### Inputs
+### Inputs (Suggested)
 - Subreddit name (e.g. `programming`)
 - Timeframe (`day`, `week`, `month`, `year`, `all`)
 - (Optional) a limit on number of posts, defaulting to 50
@@ -39,12 +35,6 @@ The script should take a **subreddit name** and a **timeframe** as inputs and pr
 - Permalink (full URL)
 - Created timestamp (as a readable ISO datetime, not a raw Unix number)
 - Flair, if present
-
-### Behaviour
-- **Pagination** — Reddit returns posts in pages using an `after` cursor. Follow it so you can pull more than the first page when the limit requires it.
-- **Rate limiting** — Reddit will rate-limit you. Set a real, descriptive `User-Agent` header, don't hammer the endpoint, and back off + retry on a `429` response. We pay specific attention to this.
-- **Clean output** — write the results to **both** a `JSON` file and a `CSV` file.
-- **Resilience** — dedupe posts, and skip malformed entries rather than crashing the whole run.
 
 ### Handle these failure cases gracefully (don't just crash)
 - Subreddit does not exist (`404`)
@@ -103,8 +93,7 @@ Pick your own language and libraries — choosing a sensible stack and pinning y
    - How to install and run it (exact commands)
    - Any assumptions or decisions you made
    - Anything you'd improve or add with more time
-3. The generated `JSON` and `CSV` output from at least one real run.
-4. At least one or two small tests (e.g. covering the parsing logic and the "subreddit not found" path).
+3. The generated `JSON` or `CSV` output from at least one real run.
 
 ---
 
@@ -122,8 +111,6 @@ A note on questions: if something is genuinely ambiguous, ask us — one or two 
 ---
 
 ## Deadline
-
-**You have 24 hours from the moment this task is sent to you.** Commit as you go so your progress is timestamped.
 
 We'd rather see how far you get *cleanly* than a rushed attempt at everything. If you run out of time, submit what you have and use the README to explain what's done, what isn't, and what you'd do next.
 
