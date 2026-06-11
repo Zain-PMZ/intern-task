@@ -1,6 +1,6 @@
 # Reddit Top Posts Scraper
 
-A command-line tool that fetches top posts from any public subreddit using Reddit's public JSON API and outputs clean, structured data to JSON and CSV.
+A command-line tool that fetches top posts from any public subreddit using Reddit's own JSON API. Uses Playwright browser emulation to handle Reddit's geo-restrictions and bot detection.
 
 ## Setup
 
@@ -8,19 +8,20 @@ A command-line tool that fetches top posts from any public subreddit using Reddi
 
 ```bash
 pip install -r requirements.txt
+python3 -m playwright install chromium
 ```
 
 ## Usage
 
 ```bash
-python scraper.py <subreddit> <timeframe> [--limit N]
+python3 scraper.py <subreddit> <timeframe> [--limit N]
 ```
 
 **Examples:**
 ```bash
-python scraper.py programming week --limit 50
-python scraper.py worldnews day --limit 25
-python scraper.py python all --limit 100
+python3 scraper.py programming week --limit 50
+python3 scraper.py worldnews day --limit 25
+python3 scraper.py python all --limit 100
 ```
 
 Output files are saved to the `output/` directory:
@@ -30,20 +31,23 @@ Output files are saved to the `output/` directory:
 ## Running Tests
 
 ```bash
-pip install pytest
-pytest tests/ -v
+pip install pytest pytest-timeout
+pytest tests/ -v --timeout=10
 ```
+
+## How it works
+
+Reddit's public JSON endpoints return 403 for requests from certain regions. This scraper uses Playwright to launch a headless Chromium browser, warm up a real session on reddit.com (acquiring cookies and headers), then fetches the JSON API endpoint directly. No third-party proxy or API service is used — all data comes straight from reddit.com.
 
 ## Assumptions & Decisions
 
-- **Python + requests only** — no heavy frameworks needed for this task.
-- **No authentication** — uses Reddit's public `.json` endpoints exclusively.
-- **User-Agent** is set to a descriptive string as required by Reddit's API guidelines.
-- **Pagination** follows Reddit's `after` cursor across pages, with a 1-second delay between requests.
-- **Rate limiting** — backs off on 429 with `Retry-After`, retries up to 3 times.
+- **Playwright + requests** — Playwright handles the browser session; the JSON is parsed directly from the page body.
+- **No authentication** — uses Reddit's public endpoints only. No login, no credentials.
+- **Pagination** follows Reddit's after cursor across pages with a 1-second delay between requests.
+- **Rate limiting** — backs off on repeated failures, retries up to 3 times.
 - **Resilience** — malformed posts are skipped and logged; the run continues.
-- Timestamps are converted from Unix UTC to ISO 8601 format.
-- Deleted authors are stored as `[deleted]` rather than `null`.
+- Timestamps converted from Unix UTC to ISO 8601.
+- Deleted authors stored as [deleted].
 
 ## Error Handling
 
@@ -53,13 +57,12 @@ pytest tests/ -v
 | Private/quarantined (403) | Logs error, exits cleanly |
 | Empty results | Logs warning, saves empty output |
 | Network timeout | Retries up to 3x, then exits cleanly |
-| Rate limited (429) | Waits Retry-After seconds, retries |
 | Malformed post | Skips the post, continues |
 
 ## What I'd Improve With More Time
 
-- Add async requests (httpx + asyncio) for faster pagination
+- Cache the browser session so repeated runs don't need to warm up again
+- Add async fetching for faster pagination
 - Support multiple subreddits in one run
-- Add a --output-dir flag for custom output paths
 - Store results in SQLite for incremental runs
-- Expand test coverage to include pagination logic
+- Expand test coverage to include pagination and timeout retry logic

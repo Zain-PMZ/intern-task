@@ -1,0 +1,488 @@
+{
+  "subreddit": "programming",
+  "timeframe": "week",
+  "fetched_at": "2026-06-11T00:54:36Z",
+  "count": 48,
+  "posts": [
+    {
+      "id": "1tzaugj",
+      "title": "To my students",
+      "author": "f311a",
+      "score": 818,
+      "num_comments": 235,
+      "permalink": "https://www.reddit.com/r/programming/comments/1tzaugj/to_my_students/",
+      "created_at": "2026-06-07T12:29:22Z",
+      "flair": ""
+    },
+    {
+      "id": "1u089ai",
+      "title": "VS Code Adds 2-Hour Extension Auto-Update Delay to Limit Supply Chain Attacks",
+      "author": "CircumspectCapybara",
+      "score": 782,
+      "num_comments": 108,
+      "permalink": "https://www.reddit.com/r/programming/comments/1u089ai/vs_code_adds_2hour_extension_autoupdate_delay_to/",
+      "created_at": "2026-06-08T13:40:51Z",
+      "flair": ""
+    },
+    {
+      "id": "1twg7mu",
+      "title": "Elixir v1.20 released: now a gradually typed language",
+      "author": "f311a",
+      "score": 529,
+      "num_comments": 141,
+      "permalink": "https://www.reddit.com/r/programming/comments/1twg7mu/elixir_v120_released_now_a_gradually_typed/",
+      "created_at": "2026-06-04T07:14:11Z",
+      "flair": ""
+    },
+    {
+      "id": "1tyalr6",
+      "title": "The perils of UUID primary keys in SQLite",
+      "author": "andersmurphy",
+      "score": 408,
+      "num_comments": 137,
+      "permalink": "https://www.reddit.com/r/programming/comments/1tyalr6/the_perils_of_uuid_primary_keys_in_sqlite/",
+      "created_at": "2026-06-06T07:27:40Z",
+      "flair": ""
+    },
+    {
+      "id": "1tydqbt",
+      "title": "Stop Using Conventional Commits",
+      "author": "f311a",
+      "score": 369,
+      "num_comments": 190,
+      "permalink": "https://www.reddit.com/r/programming/comments/1tydqbt/stop_using_conventional_commits/",
+      "created_at": "2026-06-06T10:32:53Z",
+      "flair": ""
+    },
+    {
+      "id": "1txlq6l",
+      "title": "Configuration flags are where software goes to rot",
+      "author": "Expurple",
+      "score": 304,
+      "num_comments": 168,
+      "permalink": "https://www.reddit.com/r/programming/comments/1txlq6l/configuration_flags_are_where_software_goes_to_rot/",
+      "created_at": "2026-06-05T13:57:30Z",
+      "flair": ""
+    },
+    {
+      "id": "1u10n7z",
+      "title": "SQLite improving performance with pre-sort",
+      "author": "andersmurphy",
+      "score": 287,
+      "num_comments": 62,
+      "permalink": "https://www.reddit.com/r/programming/comments/1u10n7z/sqlite_improving_performance_with_presort/",
+      "created_at": "2026-06-09T10:01:53Z",
+      "flair": ""
+    },
+    {
+      "id": "1twlx1p",
+      "title": "Single responsibility, the distorted principle",
+      "author": "Illustrious-Topic-50",
+      "score": 267,
+      "num_comments": 174,
+      "permalink": "https://www.reddit.com/r/programming/comments/1twlx1p/single_responsibility_the_distorted_principle/",
+      "created_at": "2026-06-04T12:16:07Z",
+      "flair": ""
+    },
+    {
+      "id": "1u098uy",
+      "title": "Lies We Tell Ourselves About Email Addresses",
+      "author": "theghostofm",
+      "score": 262,
+      "num_comments": 86,
+      "permalink": "https://www.reddit.com/r/programming/comments/1u098uy/lies_we_tell_ourselves_about_email_addresses/",
+      "created_at": "2026-06-08T14:17:00Z",
+      "flair": ""
+    },
+    {
+      "id": "1txf7qk",
+      "title": "You Don't Love systemd Timers Enough",
+      "author": "f311a",
+      "score": 249,
+      "num_comments": 57,
+      "permalink": "https://www.reddit.com/r/programming/comments/1txf7qk/you_dont_love_systemd_timers_enough/",
+      "created_at": "2026-06-05T08:47:26Z",
+      "flair": ""
+    },
+    {
+      "id": "1twhl2t",
+      "title": "Pandas as a reason to learn Python, even if you’re not doing data science",
+      "author": "Horror-Willingness74",
+      "score": 218,
+      "num_comments": 101,
+      "permalink": "https://www.reddit.com/r/programming/comments/1twhl2t/pandas_as_a_reason_to_learn_python_even_if_youre/",
+      "created_at": "2026-06-04T08:33:38Z",
+      "flair": ""
+    },
+    {
+      "id": "1u09rah",
+      "title": "Why Compiler Engineers Rarely Use Strassen's Algorithm for Fast Matrix Multiplications",
+      "author": "DataBaeBee",
+      "score": 199,
+      "num_comments": 53,
+      "permalink": "https://www.reddit.com/r/programming/comments/1u09rah/why_compiler_engineers_rarely_use_strassens/",
+      "created_at": "2026-06-08T14:36:19Z",
+      "flair": ""
+    },
+    {
+      "id": "1tybuv7",
+      "title": "The cover of C++: The Programming Language raises questions not answered by the cover",
+      "author": "lelanthran",
+      "score": 181,
+      "num_comments": 25,
+      "permalink": "https://www.reddit.com/r/programming/comments/1tybuv7/the_cover_of_c_the_programming_language_raises/",
+      "created_at": "2026-06-06T08:41:41Z",
+      "flair": ""
+    },
+    {
+      "id": "1u28egw",
+      "title": "The unwritten laws of software engineering",
+      "author": "fagnerbrack",
+      "score": 171,
+      "num_comments": 51,
+      "permalink": "https://www.reddit.com/r/programming/comments/1u28egw/the_unwritten_laws_of_software_engineering/",
+      "created_at": "2026-06-10T17:12:01Z",
+      "flair": ""
+    },
+    {
+      "id": "1u1512l",
+      "title": "someone actually leaked the Miasma supply chain attack toolkit source code on github",
+      "author": "BattleRemote3157",
+      "score": 158,
+      "num_comments": 11,
+      "permalink": "https://www.reddit.com/r/programming/comments/1u1512l/someone_actually_leaked_the_miasma_supply_chain/",
+      "created_at": "2026-06-09T13:29:08Z",
+      "flair": ""
+    },
+    {
+      "id": "1tzfefn",
+      "title": "Getting silly with C, part &((int*)-8)[3]",
+      "author": "f311a",
+      "score": 147,
+      "num_comments": 16,
+      "permalink": "https://www.reddit.com/r/programming/comments/1tzfefn/getting_silly_with_c_part_int83/",
+      "created_at": "2026-06-07T15:38:07Z",
+      "flair": ""
+    },
+    {
+      "id": "1txe9b5",
+      "title": "A faster bump allocator for rust",
+      "author": "Successful_Bowl2564",
+      "score": 139,
+      "num_comments": 18,
+      "permalink": "https://www.reddit.com/r/programming/comments/1txe9b5/a_faster_bump_allocator_for_rust/",
+      "created_at": "2026-06-05T07:50:21Z",
+      "flair": ""
+    },
+    {
+      "id": "1tw9pl9",
+      "title": "A tale about fixing eBPF spinlock issues in the Linux kernel",
+      "author": "fagnerbrack",
+      "score": 139,
+      "num_comments": 23,
+      "permalink": "https://www.reddit.com/r/programming/comments/1tw9pl9/a_tale_about_fixing_ebpf_spinlock_issues_in_the/",
+      "created_at": "2026-06-04T01:51:56Z",
+      "flair": ""
+    },
+    {
+      "id": "1u06itn",
+      "title": "Hot path optimization. When float division beats integer division",
+      "author": "watman12",
+      "score": 133,
+      "num_comments": 32,
+      "permalink": "https://www.reddit.com/r/programming/comments/1u06itn/hot_path_optimization_when_float_division_beats/",
+      "created_at": "2026-06-08T12:30:52Z",
+      "flair": ""
+    },
+    {
+      "id": "1tz9cp7",
+      "title": "Reverse engineering the Creative Katana V2X soundbar to be able to control it from Linux",
+      "author": "throwaway16830261",
+      "score": 114,
+      "num_comments": 12,
+      "permalink": "https://www.reddit.com/r/programming/comments/1tz9cp7/reverse_engineering_the_creative_katana_v2x/",
+      "created_at": "2026-06-07T11:13:31Z",
+      "flair": ""
+    },
+    {
+      "id": "1twnahx",
+      "title": "Stealing from Biologists to Compile Haskell Faster",
+      "author": "mooreds",
+      "score": 114,
+      "num_comments": 5,
+      "permalink": "https://www.reddit.com/r/programming/comments/1twnahx/stealing_from_biologists_to_compile_haskell_faster/",
+      "created_at": "2026-06-04T13:12:30Z",
+      "flair": ""
+    },
+    {
+      "id": "1txhxly",
+      "title": "JPEG compression deep dive",
+      "author": "fagnerbrack",
+      "score": 88,
+      "num_comments": 6,
+      "permalink": "https://www.reddit.com/r/programming/comments/1txhxly/jpeg_compression_deep_dive/",
+      "created_at": "2026-06-05T11:14:26Z",
+      "flair": ""
+    },
+    {
+      "id": "1u0vb76",
+      "title": "Cache Stampede Prevention: Distributed Locking, Pub/Sub, and Request Coalescing",
+      "author": "Local_Ad_6109",
+      "score": 88,
+      "num_comments": 6,
+      "permalink": "https://www.reddit.com/r/programming/comments/1u0vb76/cache_stampede_prevention_distributed_locking/",
+      "created_at": "2026-06-09T04:53:09Z",
+      "flair": ""
+    },
+    {
+      "id": "1tzeb9a",
+      "title": "#JavaNext Language Features",
+      "author": "joemwangi",
+      "score": 88,
+      "num_comments": 36,
+      "permalink": "https://www.reddit.com/r/programming/comments/1tzeb9a/javanext_language_features/",
+      "created_at": "2026-06-07T14:55:55Z",
+      "flair": ""
+    },
+    {
+      "id": "1u0epow",
+      "title": "You can fork a package, but can you own it?",
+      "author": "Adventurous-Salt8514",
+      "score": 84,
+      "num_comments": 6,
+      "permalink": "https://www.reddit.com/r/programming/comments/1u0epow/you_can_fork_a_package_but_can_you_own_it/",
+      "created_at": "2026-06-08T17:32:25Z",
+      "flair": ""
+    },
+    {
+      "id": "1u12rbh",
+      "title": "Catlantean 3D - Making Graphics Like It's 1993",
+      "author": "Dear-Economics-315",
+      "score": 69,
+      "num_comments": 4,
+      "permalink": "https://www.reddit.com/r/programming/comments/1u12rbh/catlantean_3d_making_graphics_like_its_1993/",
+      "created_at": "2026-06-09T11:51:42Z",
+      "flair": ""
+    },
+    {
+      "id": "1twl8ip",
+      "title": "Scala Was an Experiment That Changed Programming - Martin Odersky | The Marco Show",
+      "author": "makingthematrix",
+      "score": 65,
+      "num_comments": 106,
+      "permalink": "https://www.reddit.com/r/programming/comments/1twl8ip/scala_was_an_experiment_that_changed_programming/",
+      "created_at": "2026-06-04T11:46:16Z",
+      "flair": ""
+    },
+    {
+      "id": "1txh6as",
+      "title": "Using local ClickHouse for data processing",
+      "author": "f311a",
+      "score": 60,
+      "num_comments": 5,
+      "permalink": "https://www.reddit.com/r/programming/comments/1txh6as/using_local_clickhouse_for_data_processing/",
+      "created_at": "2026-06-05T10:36:01Z",
+      "flair": ""
+    },
+    {
+      "id": "1twizqa",
+      "title": "The Schema Proliferation Problem in Kafka and Flink Pipelines: How to Solve It",
+      "author": "nilukush",
+      "score": 38,
+      "num_comments": 3,
+      "permalink": "https://www.reddit.com/r/programming/comments/1twizqa/the_schema_proliferation_problem_in_kafka_and/",
+      "created_at": "2026-06-04T09:53:42Z",
+      "flair": ""
+    },
+    {
+      "id": "1twww78",
+      "title": "Porting our Django backend to Rust improved the infra usage by 90%",
+      "author": "syrusakbary",
+      "score": 37,
+      "num_comments": 43,
+      "permalink": "https://www.reddit.com/r/programming/comments/1twww78/porting_our_django_backend_to_rust_improved_the/",
+      "created_at": "2026-06-04T18:52:56Z",
+      "flair": ""
+    },
+    {
+      "id": "1u04bdc",
+      "title": "Native Elm (the real kind this time) · cekrem.github.io",
+      "author": "cekrem",
+      "score": 32,
+      "num_comments": 19,
+      "permalink": "https://www.reddit.com/r/programming/comments/1u04bdc/native_elm_the_real_kind_this_time_cekremgithubio/",
+      "created_at": "2026-06-08T10:45:32Z",
+      "flair": ""
+    },
+    {
+      "id": "1u194jv",
+      "title": "How to read distributed traces when you didn’t write the code",
+      "author": "elizObserves",
+      "score": 18,
+      "num_comments": 0,
+      "permalink": "https://www.reddit.com/r/programming/comments/1u194jv/how_to_read_distributed_traces_when_you_didnt/",
+      "created_at": "2026-06-09T15:57:06Z",
+      "flair": ""
+    },
+    {
+      "id": "1tzxrpz",
+      "title": "Building a spaced repetition system that adapts to user pace in real-time (Kotlin/Compose)",
+      "author": "No-Position-7728",
+      "score": 15,
+      "num_comments": 2,
+      "permalink": "https://www.reddit.com/r/programming/comments/1tzxrpz/building_a_spaced_repetition_system_that_adapts/",
+      "created_at": "2026-06-08T04:33:49Z",
+      "flair": ""
+    },
+    {
+      "id": "1u29255",
+      "title": "C3 0.8.1 released: Raiding the stdlib for bugs",
+      "author": "Nuoji",
+      "score": 14,
+      "num_comments": 0,
+      "permalink": "https://www.reddit.com/r/programming/comments/1u29255/c3_081_released_raiding_the_stdlib_for_bugs/",
+      "created_at": "2026-06-10T17:34:44Z",
+      "flair": ""
+    },
+    {
+      "id": "1twglxs",
+      "title": "Finding Hermite Normal Form and Solving Linear Diophantines Using LLL",
+      "author": "DataBaeBee",
+      "score": 12,
+      "num_comments": 1,
+      "permalink": "https://www.reddit.com/r/programming/comments/1twglxs/finding_hermite_normal_form_and_solving_linear/",
+      "created_at": "2026-06-04T07:36:47Z",
+      "flair": ""
+    },
+    {
+      "id": "1u09npb",
+      "title": "Poor Man's Time Machine: Lazy Evaluation in JavaScript and Haskell",
+      "author": "sayyadirfanali",
+      "score": 9,
+      "num_comments": 0,
+      "permalink": "https://www.reddit.com/r/programming/comments/1u09npb/poor_mans_time_machine_lazy_evaluation_in/",
+      "created_at": "2026-06-08T14:32:41Z",
+      "flair": ""
+    },
+    {
+      "id": "1u0m4sm",
+      "title": "Building a Detection Layer on PostgreSQL with Sigma Rules",
+      "author": "Happycodeine",
+      "score": 11,
+      "num_comments": 0,
+      "permalink": "https://www.reddit.com/r/programming/comments/1u0m4sm/building_a_detection_layer_on_postgresql_with/",
+      "created_at": "2026-06-08T21:56:28Z",
+      "flair": ""
+    },
+    {
+      "id": "1u06nad",
+      "title": "System Dynamics Course | Chapter 16: Discrete-Time and Sampled-Data System Dynamics",
+      "author": "abolfazl1363",
+      "score": 6,
+      "num_comments": 0,
+      "permalink": "https://www.reddit.com/r/programming/comments/1u06nad/system_dynamics_course_chapter_16_discretetime/",
+      "created_at": "2026-06-08T12:36:21Z",
+      "flair": ""
+    },
+    {
+      "id": "1u149mq",
+      "title": "How we sync Postgres to the browser: ElectricSQL for rows, Yjs for documents",
+      "author": "jxd-dev",
+      "score": 3,
+      "num_comments": 1,
+      "permalink": "https://www.reddit.com/r/programming/comments/1u149mq/how_we_sync_postgres_to_the_browser_electricsql/",
+      "created_at": "2026-06-09T12:58:52Z",
+      "flair": ""
+    },
+    {
+      "id": "1twbkd5",
+      "title": "LLL Algorithm for Computer Scientists",
+      "author": "DataBaeBee",
+      "score": 2,
+      "num_comments": 2,
+      "permalink": "https://www.reddit.com/r/programming/comments/1twbkd5/lll_algorithm_for_computer_scientists/",
+      "created_at": "2026-06-04T03:16:09Z",
+      "flair": ""
+    },
+    {
+      "id": "1u1ahi4",
+      "title": "Inferencing Text Diffusion Models in Python and C",
+      "author": "DataBaeBee",
+      "score": 0,
+      "num_comments": 0,
+      "permalink": "https://www.reddit.com/r/programming/comments/1u1ahi4/inferencing_text_diffusion_models_in_python_and_c/",
+      "created_at": "2026-06-09T16:44:45Z",
+      "flair": ""
+    },
+    {
+      "id": "1u1zb27",
+      "title": "ReactJS Syntax For Web Components",
+      "author": "Accurate-Screen8774",
+      "score": 0,
+      "num_comments": 3,
+      "permalink": "https://www.reddit.com/r/programming/comments/1u1zb27/reactjs_syntax_for_web_components/",
+      "created_at": "2026-06-10T11:20:23Z",
+      "flair": ""
+    },
+    {
+      "id": "1u0w9bc",
+      "title": "120,000 Lines of Rust: Inside the Nosdesk Backend",
+      "author": "BlondieCoder",
+      "score": 0,
+      "num_comments": 3,
+      "permalink": "https://www.reddit.com/r/programming/comments/1u0w9bc/120000_lines_of_rust_inside_the_nosdesk_backend/",
+      "created_at": "2026-06-09T05:43:21Z",
+      "flair": ""
+    },
+    {
+      "id": "1u0nnjp",
+      "title": "An opinionated logging setup in Go",
+      "author": "Mellowww",
+      "score": 0,
+      "num_comments": 0,
+      "permalink": "https://www.reddit.com/r/programming/comments/1u0nnjp/an_opinionated_logging_setup_in_go/",
+      "created_at": "2026-06-08T22:57:44Z",
+      "flair": ""
+    },
+    {
+      "id": "1u1t9yi",
+      "title": "The Smart Dumb Programmer",
+      "author": "fagnerbrack",
+      "score": 0,
+      "num_comments": 5,
+      "permalink": "https://www.reddit.com/r/programming/comments/1u1t9yi/the_smart_dumb_programmer/",
+      "created_at": "2026-06-10T05:40:43Z",
+      "flair": ""
+    },
+    {
+      "id": "1twoqch",
+      "title": "Basic Type System Terminology",
+      "author": "legoman25",
+      "score": 0,
+      "num_comments": 13,
+      "permalink": "https://www.reddit.com/r/programming/comments/1twoqch/basic_type_system_terminology/",
+      "created_at": "2026-06-04T14:07:13Z",
+      "flair": ""
+    },
+    {
+      "id": "1twxhjy",
+      "title": "How we reduced the time to run tests from hours to just minutes",
+      "author": "henk53",
+      "score": 0,
+      "num_comments": 17,
+      "permalink": "https://www.reddit.com/r/programming/comments/1twxhjy/how_we_reduced_the_time_to_run_tests_from_hours/",
+      "created_at": "2026-06-04T19:13:44Z",
+      "flair": ""
+    },
+    {
+      "id": "1u013qa",
+      "title": "The Day I Decided Never to Learn Python",
+      "author": "Active-Fuel-49",
+      "score": 0,
+      "num_comments": 15,
+      "permalink": "https://www.reddit.com/r/programming/comments/1u013qa/the_day_i_decided_never_to_learn_python/",
+      "created_at": "2026-06-08T07:40:03Z",
+      "flair": ""
+    }
+  ]
+}

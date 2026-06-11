@@ -1,7 +1,6 @@
 """
 Reddit Top Posts Scraper
-Fetches top posts from a subreddit using Arctic Shift API (mirrors Reddit public data).
-Falls back gracefully on all error conditions.
+Uses Playwright to bypass geo-restrictions and fetch real Reddit JSON data.
 """
 
 import argparse
@@ -12,86 +11,76 @@ import logging
 from datetime import datetime, timezone
 from pathlib import Path
 
-import requests
+from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeout
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 log = logging.getLogger(__name__)
 
-BASE_URL = "https://arctic-shift.photon-reddit.com/api/posts/search"
 REDDIT_BASE = "https://www.reddit.com"
-HEADERS = {"User-Agent": "intern-scraper/1.0 by Zain-PMZ"}
+USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 
 
-def fetch_page(subreddit: str, timeframe: str, limit: int, after: str | None) -> dict:
-    """Fetch one page of posts. Raises on unrecoverable errors."""
-    # Calculate time range based on timeframe
-    now = int(time.time())
-    timeframe_seconds = {
-        "day": 86400,
-        "week": 604800,
-        "month": 2592000,
-        "year": 31536000,
-        "all": None
-    }
+def make_browser_context(playwright):
+    browser = playwright.chromium.launch(headless=True)
+    context = browser.new_context(user_agent=USER_AGENT)
+    page = context.new_page()
+    log.info("Warming up browser session...")
+    page.goto(REDDIT_BASE, timeout=30000)
+    page.wait_for_timeout(2000)
+    return browser, context, page
 
-    params = {
-        "subreddit": subreddit,
-        "limit": min(limit, 100),
-        "sort": "desc",
-    }
 
-    if timeframe != "all":
-        params["after"] = str(now - timeframe_seconds[timeframe])
-
+def fetch_page(page, subreddit: str, timeframe: str, limit: int, after: str | None) -> dict:
+    url = f"{REDDIT_BASE}/r/{subreddit}/top.json?t={timeframe}&limit={min(limit,100)}&raw_json=1"
     if after:
-        params["before_id"] = after
+        url += f"&after={after}"
 
     for attempt in range(3):
         try:
-            resp = requests.get(BASE_URL, headers=HEADERS, params=params, timeout=10)
-        except requests.exceptions.Timeout:
-            log.warning("Request timed out (attempt %d/3)", attempt + 1)
+            page.goto(url, timeout=15000)
+            page.wait_for_timeout(1000)
+            content = page.inner_text("body")
+        except PlaywrightTimeout:
+            log.warning("Timed out (attempt %d/3)", attempt + 1)
             time.sleep(2 ** attempt)
             continue
-        except requests.exceptions.RequestException as e:
-            raise RuntimeError(f"Network error: {e}") from e
 
-        if resp.status_code == 200:
-            data = resp.json()
-            if data.get("data") is None:
-                raise ValueError(f"Subreddit r/{subreddit} not found or is private.")
-            if isinstance(data["data"], list) and len(data["data"]) == 0:
-                return {"data": {"children": [], "after": None}}
-            return data
-        if resp.status_code == 429:
-            wait = int(resp.headers.get("Retry-After", 5))
-            log.warning("Rate limited. Waiting %ds...", wait)
-            time.sleep(wait)
+        if not content.strip().startswith("{"):
+            # Check for known error conditions
+            if "private" in content.lower() or "quarantined" in content.lower():
+                raise ValueError(f"Subreddit r/{subreddit} is private or quarantined.")
+            if '"error": 404' in content or '"error":404' in content:
+                raise ValueError(f"Subreddit r/{subreddit} not found (404).")
+            log.warning("Unexpected response (attempt %d/3)", attempt + 1)
+            time.sleep(2 ** attempt)
             continue
-        if resp.status_code == 404:
-            raise ValueError(f"Subreddit r/{subreddit} not found (404).")
-        if resp.status_code == 403:
-            raise ValueError(f"Subreddit r/{subreddit} is private or quarantined (403).")
-        resp.raise_for_status()
 
-    raise RuntimeError("Failed after 3 attempts (rate limit or timeout).")
+        data = json.loads(content)
+
+        if "error" in data:
+            code = data["error"]
+            if code == 404:
+                raise ValueError(f"Subreddit r/{subreddit} not found (404).")
+            if code == 403:
+                raise ValueError(f"Subreddit r/{subreddit} is private or quarantined (403).")
+            raise RuntimeError(f"Reddit API error: {code}")
+
+        return data
+
+    raise RuntimeError("Failed after 3 attempts.")
 
 
 def parse_post(post_data: dict) -> dict | None:
-    """Extract fields from a single post. Returns None if malformed."""
     try:
-        d = post_data
-        created_utc = d.get("created_utc") or d.get("created")
-        if isinstance(created_utc, str):
-            created_utc = float(created_utc)
+        d = post_data["data"]
         return {
             "id": d["id"],
             "title": d["title"],
             "author": d.get("author") or "[deleted]",
-            "score": int(d.get("score", 0)),
-            "num_comments": int(d.get("num_comments", 0)),
+            "score": int(d["score"]),
+            "num_comments": int(d["num_comments"]),
             "permalink": REDDIT_BASE + d["permalink"],
-            "created_at": datetime.fromtimestamp(created_utc, tz=timezone.utc)
+            "created_at": datetime.fromtimestamp(float(d["created_utc"]), tz=timezone.utc)
                                  .strftime("%Y-%m-%dT%H:%M:%SZ"),
             "flair": d.get("link_flair_text") or "",
         }
@@ -101,47 +90,38 @@ def parse_post(post_data: dict) -> dict | None:
 
 
 def scrape(subreddit: str, timeframe: str, limit: int = 50) -> list[dict]:
-    """Paginate through results and return up to limit unique posts."""
     posts = []
     seen_ids = set()
     after = None
 
-    while len(posts) < limit:
-        batch_limit = min(limit - len(posts), 100)
-        log.info("Fetching %d posts (have %d so far)...", batch_limit, len(posts))
+    with sync_playwright() as p:
+        browser, context, page = make_browser_context(p)
 
-        data = fetch_page(subreddit, timeframe, batch_limit, after)
+        try:
+            while len(posts) < limit:
+                batch_limit = min(limit - len(posts), 100)
+                log.info("Fetching %d posts (have %d so far)...", batch_limit, len(posts))
 
-        # Handle both Arctic Shift format and standard format
-        if "data" in data and isinstance(data["data"], list):
-            children = data["data"]
-        else:
-            children = data.get("data", {}).get("children", [])
+                data = fetch_page(page, subreddit, timeframe, batch_limit, after)
+                children = data.get("data", {}).get("children", [])
 
-        if not children:
-            log.info("No more posts available.")
-            break
+                if not children:
+                    log.info("No more posts available.")
+                    break
 
-        for child in children:
-            # Arctic Shift returns posts directly, not wrapped in {kind, data}
-            post_data = child.get("data", child)
-            post = parse_post(post_data)
-            if post and post["id"] not in seen_ids:
-                seen_ids.add(post["id"])
-                posts.append(post)
+                for child in children:
+                    post = parse_post(child)
+                    if post and post["id"] not in seen_ids:
+                        seen_ids.add(post["id"])
+                        posts.append(post)
 
-        # Use last post ID for pagination
-        if children and len(posts) < limit:
-            new_after = children[-1].get("name") or children[-1].get("id")
-            if new_after and not new_after.startswith("t3_"):
-                new_after = "t3_" + new_after
-            if new_after == after:
-                break
-            after = new_after
-        else:
-            break
+                after = data.get("data", {}).get("after")
+                if not after:
+                    break
 
-        time.sleep(1)
+                time.sleep(1)
+        finally:
+            browser.close()
 
     return posts
 
