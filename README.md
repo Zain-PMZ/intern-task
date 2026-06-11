@@ -6,34 +6,27 @@ A command-line tool that fetches top posts from any public subreddit using Reddi
 
 **Requirements:** Python 3.10+
 
-```bash
 pip install -r requirements.txt
 python3 -m playwright install chromium
-```
 
 ## Usage
 
-```bash
 python3 scraper.py <subreddit> <timeframe> [--limit N]
-```
 
 **Examples:**
-```bash
+
 python3 scraper.py programming week --limit 50
 python3 scraper.py worldnews day --limit 25
 python3 scraper.py python all --limit 100
-```
 
-Output files are saved to the `output/` directory:
-- `output/programming_week.json`
-- `output/programming_week.csv`
+Output files are saved to the output/ directory:
+- output/programming_week.json
+- output/programming_week.csv
 
 ## Running Tests
 
-```bash
 pip install pytest pytest-timeout
 pytest tests/ -v --timeout=10
-```
 
 ## How it works
 
@@ -41,11 +34,11 @@ Reddit's public JSON endpoints return 403 for requests from certain regions. Thi
 
 ## Assumptions & Decisions
 
-- **Playwright + requests** — Playwright handles the browser session; the JSON is parsed directly from the page body.
-- **No authentication** — uses Reddit's public endpoints only. No login, no credentials.
-- **Pagination** follows Reddit's after cursor across pages with a 1-second delay between requests.
-- **Rate limiting** — backs off on repeated failures, retries up to 3 times.
-- **Resilience** — malformed posts are skipped and logged; the run continues.
+- Playwright handles the browser session; the JSON is parsed directly from the page body.
+- No authentication — uses Reddit's public endpoints only. No login, no credentials.
+- Pagination follows Reddit's after cursor across pages with a 1-second delay between requests.
+- Rate limiting — backs off on repeated failures, retries up to 3 times.
+- Resilience — malformed posts are skipped and logged; the run continues.
 - Timestamps converted from Unix UTC to ISO 8601.
 - Deleted authors stored as [deleted].
 
